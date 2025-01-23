@@ -33,10 +33,30 @@ static int	open_out_file(char *filename, t_pipe *data)
 
 	flags = O_WRONLY;
 	ret = access(filename, W_OK);
-	if (ret == -1 && ENOENT == 2)
+	if (ret == -1 && errno == ENOENT)
 		flags |= O_CREAT;
 	else if (ret == 0)
 		flags |= O_TRUNC;
+	else
+		die(FILE_WRITE_ACCESS_ERR, data, 1);
+	permissions = S_IWUSR | S_IRUSR | S_IRGRP | S_IROTH;
+	fd = open(filename, flags, permissions);
+	if (fd < 3)
+		die(OPEN_OUTFILE_ERR, data, 1);
+	return (fd);
+}
+
+static int	open_heredoc_file(char *filename, t_pipe *data)
+{
+	int	fd;
+	int	ret;
+	int	flags;
+	int	permissions;
+
+	flags = O_WRONLY | O_APPEND;
+	ret = access(filename, W_OK);
+	if (ret == -1 && errno == ENOENT)
+		flags |= O_CREAT;
 	else
 		die(FILE_WRITE_ACCESS_ERR, data, 1);
 	permissions = S_IWUSR | S_IRUSR | S_IRGRP | S_IROTH;
@@ -51,6 +71,8 @@ int	open_file(char *filename, t_pipe *data, int flags)
 	int	fd;
 
 	fd = -1;
+	if (data->heredoc)
+		fd = open_heredoc_file(filename, data);
 	if (flags == O_RDONLY)
 		fd = open_in_file(filename, data);
 	else if (flags == O_WRONLY)

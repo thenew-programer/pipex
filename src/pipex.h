@@ -26,8 +26,6 @@
 
 # define FALSE 0
 # define TRUE 1
-# define R_END 0
-# define W_END 1
 
 typedef struct s_ctx
 {
@@ -50,9 +48,9 @@ typedef struct s_pipe
 	char	*outfile;
 	int		outfile_fd;
 	int		pipefd[2];
-	int		oldfd;
 	t_cmd	*cmd;
 	char	*env;
+	int		heredoc;
 }	t_pipe;
 
 /*---------------------------------err.c--------------------------------------*/
@@ -90,5 +88,6 @@ int		set_path(t_pipe *data, char **env);
 
 /*--------------------------------exec.c--------------------------------------*/
 int		exec(t_pipe *data, char **env);
+void	heredoc(t_pipe *data);
 
 #endif /* PIPEX_H */

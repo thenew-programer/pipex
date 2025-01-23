@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "pipex.h"
+#include <unistd.h>
 
 t_pipe	*init_pipe(void)
 {
@@ -25,8 +26,8 @@ t_pipe	*init_pipe(void)
 	data->infile = NULL;
 	data->infile_fd = -1;
 	data->outfile_fd = -1;
-	data->pipefd[R_END] = -1;
-	data->pipefd[W_END] = -1;
-	data->oldfd = -1;
+	data->pipefd[STDIN_FILENO] = -1;
+	data->pipefd[STDOUT_FILENO] = -1;
+	data->heredoc = FALSE;
 	return (data);
 }

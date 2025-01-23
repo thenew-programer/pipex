@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "pipex.h"
+#include <stdlib.h>
 #include <unistd.h>
 
 static int	exec_cmd(t_pipe *data, t_cmd *cmd, char **env, int *status);
@@ -19,6 +20,7 @@ int	exec(t_pipe *data, char **env)
 {
 	t_cmd	*cmd;
 	int		status;
+	int		i;
 
 	cmd = data->cmd;
 	data->outfile_fd = open_file(data->outfile, data, O_WRONLY);
@@ -28,6 +30,7 @@ int	exec(t_pipe *data, char **env)
 		die("", data, 1);
 	close_file(&data->infile_fd, -1);
 	close_file(&data->outfile_fd, -1);
+	i = 0;
 	while (cmd)
 	{
 		if (pipe(data->pipefd) == -1)
@@ -39,8 +42,11 @@ int	exec(t_pipe *data, char **env)
 			die("", data, 1);
 		close_file(&data->pipefd[STDIN_FILENO], -1);
 		cmd = cmd->next;
+		i++;
 	}
-	return (status);
+	while (i-- > 0)
+		wait(&status);
+	return (WEXITSTATUS(status));
 }
 
 static int	exec_cmd(t_pipe *data, t_cmd *cmd, char **env, int *status)
@@ -55,18 +61,17 @@ static int	exec_cmd(t_pipe *data, t_cmd *cmd, char **env, int *status)
 		close_file(&data->pipefd[STDIN_FILENO], -1);
 		if (!cmd->next)
 			close_file(&cmd->ctx.fd[STDOUT_FILENO], STDOUT_FILENO);
-		if (dup2(cmd->ctx.fd[STDIN_FILENO], STDIN_FILENO) == -1)
-			die("", NULL, *status);
 		if (dup2(cmd->ctx.fd[STDOUT_FILENO], STDOUT_FILENO) == -1)
 			die("", NULL, *status);
 		close_file(&data->pipefd[STDOUT_FILENO], -1);
 		execve(cmd->path, cmd->args, env);
 	}
-	else
-	{
-		waitpid(pid, status, 0);
-		if (WIFEXITED(*status) && WEXITSTATUS(*status) != 0)
-			die(NULL, data, *status);
-	}
+	// else
+	// {
+	// 	waitpid(pid, status, 0);
+	// 	if (WIFEXITED(*status) && WEXITSTATUS(*status) != 0)
+	// 		die(NULL, data, WEXITSTATUS(*status));
+	// 	*status = WEXITSTATUS(*status);
+	// }
 	return (*status);
 }

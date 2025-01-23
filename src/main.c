@@ -12,20 +12,31 @@
 
 #include "pipex.h"
 
+extern char	**environ;
+
 int	main(int ac, char **av, char **env)
 {
 	t_pipe	*data;
 	int		ret;
 
 	ret = 0;
-	if (ac < 4)
+	if (ac < 5)
 		die(USAGE_ERR, NULL, 1);
 	data = init_pipe();
-	set_path(data, env);
 	if (!data)
 		die(MALLOC_ERR, data, 1);
-	parser(ac - 1, &(av[1]), data);
-	data->infile_fd = open_file(data->infile, data, O_RDONLY);
+	set_path(data, env);
+	if (ft_strncmp(av[1], "here_doc", ft_strlen(av[1])) == 0)
+	{
+		parser(ac - 2, &(av[2]), data);
+		data->infile_fd = STDIN_FILENO;
+		heredoc(data);
+	}
+	else
+	{
+		parser(ac - 1, &(av[1]), data);
+		data->infile_fd = open_file(data->infile, data, O_RDONLY);
+	}
 	path(data);
 	ret = exec(data, env);
 	free_pipe_data(data);
