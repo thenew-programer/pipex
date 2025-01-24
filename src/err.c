@@ -12,7 +12,7 @@
 
 #include "pipex.h"
 
-void	die(char *err, t_pipe *data, int status)
+void	die(char *err, t_pipe *data, int status, int ex)
 {
 	if (err)
 	{
@@ -22,7 +22,11 @@ void	die(char *err, t_pipe *data, int status)
 		else
 			perror("");
 	}
-	if (data)
+	if (data && ex)
+	{
 		free_pipe_data(data);
-	exit(status);
+		exit(status);
+	}
+	if (ex)
+		exit(status);
 }

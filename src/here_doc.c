@@ -10,10 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "err.h"
 #include "pipex.h"
-#include <sys/types.h>
-#include <unistd.h>
 
 char	*read_heredoc(char *limiter)
 {
@@ -29,7 +26,7 @@ char	*read_heredoc(char *limiter)
 	while (line)
 	{
 		if (ft_strncmp(line, limiter, ft_strlen(line) - 1) == 0)
-			return (free(line), str);
+			return (free(line), *ft_strrchr(str, '\n') = 0, str);
 		tmp = str;
 		str = ft_strjoin(str, line);
 		free(tmp);
@@ -49,10 +46,10 @@ void	heredoc(t_pipe *data)
 	str = read_heredoc(data->infile);
 	cmd = (t_cmd *)malloc(sizeof(t_cmd));
 	if (!cmd)
-		die(MALLOC_ERR, data, 1);
+		die(MALLOC_ERR, data, 1, TRUE);
 	cmd->args = (char **)malloc(sizeof(char *) * 3);
 	if (!cmd->args)
-		die(MALLOC_ERR, data, 1);
+		die(MALLOC_ERR, data, 1, TRUE);
 	cmd->args[0] = ft_strdup("echo");
 	cmd->args[1] = str;
 	cmd->args[2] = NULL;

@@ -57,7 +57,7 @@ int	path(t_pipe *data)
 			continue ;
 		}
 		if (find_path(tmp, data->env) == FALSE)
-			die(CMD_NOT_FOUND, data, 127);
+			die(CMD_NOT_FOUND, data, 0, TRUE);
 		tmp = tmp->next;
 	}
 	return (TRUE);

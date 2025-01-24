@@ -54,7 +54,7 @@ typedef struct s_pipe
 }	t_pipe;
 
 /*---------------------------------err.c--------------------------------------*/
-void	die(char *err, t_pipe *data, int status);
+void	die(char *err, t_pipe *data, int status, int ex);
 
 /*------------------------------dealloc.c-------------------------------------*/
 void	free_strs_split(char **strs);
