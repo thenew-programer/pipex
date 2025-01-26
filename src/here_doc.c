@@ -47,12 +47,13 @@ void	heredoc(t_pipe *data)
 	cmd = (t_cmd *)malloc(sizeof(t_cmd));
 	if (!cmd)
 		die(MALLOC_ERR, data, 1, TRUE);
-	cmd->args = (char **)malloc(sizeof(char *) * 3);
+	cmd->args = (char **)malloc(sizeof(char *) * 4);
 	if (!cmd->args)
 		die(MALLOC_ERR, data, 1, TRUE);
 	cmd->args[0] = ft_strdup("echo");
-	cmd->args[1] = str;
-	cmd->args[2] = NULL;
+	cmd->args[1] = ft_strdup("-e");
+	cmd->args[2] = str;
+	cmd->args[3] = NULL;
 	cmd->next = data->cmd;
 	data->cmd = cmd;
 }

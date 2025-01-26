@@ -23,20 +23,17 @@ int	main(int ac, char **av, char **env)
 	if (!data)
 		die(MALLOC_ERR, data, 1, TRUE);
 	set_path(data, env);
-	if (ft_strncmp(av[1], "here_doc", ft_strlen(av[1])) == 0)
+	if (ft_strncmp(av[1], "here_doc", 9) == 0)
 	{
 		parser(ac - 2, &(av[2]), data);
 		data->infile_fd = STDIN_FILENO;
-		data->outfile_fd = open_file(data->outfile, data, O_APPEND);
 		heredoc(data);
 	}
 	else
 	{
 		parser(ac - 1, &(av[1]), data);
 		data->infile_fd = open_file(data->infile, data, O_RDONLY);
-		data->outfile_fd = open_file(data->outfile, data, O_WRONLY);
 	}
-	path(data);
 	ret = exec(data, env);
 	free_pipe_data(data);
 	return (ret);

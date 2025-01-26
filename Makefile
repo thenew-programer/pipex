@@ -27,7 +27,12 @@ $(LIBFT):
 			@echo "Building libft"
 			@make all bonus -C $(LIBFT_DIR)
 
-bonus: re
+append_macro:
+	$(eval CFLAGS := $(CFLAGS) -D PIPEX_BONUS=1)
+
+# bonus:		fclean append_macro $(OBJS) $(LIBFT)
+# 			$(CC) $(OBJS) -o $@ $(LDFLAGS)
+bonus:		fclean append_macro all
 
 clean:
 			$(RM) $(OBJS_DIR)

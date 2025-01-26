@@ -6,7 +6,7 @@
 /*   By: ybouryal <ybouryal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 10:33:08 by ybouryal          #+#    #+#             */
-/*   Updated: 2025/01/18 21:28:53 by ybouryal         ###   ########.fr       */
+/*   Updated: 2025/01/26 11:05:33 by ybouryal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,15 @@ void	parser(int ac, char **av, t_pipe *data);
 
 /*--------------------------------path.c--------------------------------------*/
 int		path(t_pipe *data);
+int		find_path(t_pipe *data, t_cmd *cmd, char *env);
 int		set_path(t_pipe *data, char **env);
 
 /*--------------------------------exec.c--------------------------------------*/
 int		exec(t_pipe *data, char **env);
 void	heredoc(t_pipe *data);
+
+/*-------------------------------syscalls.c-----------------------------------*/
+int		duptwo(t_pipe *data, int oldfd, int newfd);
+int		access_file(t_pipe *data, char *filename, int mode);
 
 #endif /* PIPEX_H */

@@ -12,17 +12,19 @@
 
 #include "libft.h"
 #include "pipex.h"
+#include <unistd.h>
 
-int	find_path(t_cmd *cmd, char *env)
+int	find_path(t_pipe *data, t_cmd *cmd, char *env)
 {
 	int		i;
 	char	**strs;
 	char	*tmp;
 	char	*tmp1;
 
+	if (access(cmd->args[0], X_OK) == 0)
+		return (cmd->path = ft_strdup(cmd->args[0]), TRUE);
 	strs = ft_split(env, ':');
 	i = 0;
-	tmp = NULL;
 	while (strs[i] && env)
 	{
 		tmp1 = ft_strjoin(strs[i++], "/");
@@ -37,7 +39,7 @@ int	find_path(t_cmd *cmd, char *env)
 	cmd->path = tmp;
 	free_strs_split(strs);
 	if (!tmp)
-		return (FALSE);
+		die(CMD_NOT_FOUND, data, 127, TRUE);
 	return (TRUE);
 }
 
@@ -56,7 +58,7 @@ int	path(t_pipe *data)
 			tmp = tmp->next;
 			continue ;
 		}
-		if (find_path(tmp, data->env) == FALSE)
+		if (find_path(data, tmp, data->env) == FALSE)
 			die(CMD_NOT_FOUND, data, 0, TRUE);
 		tmp = tmp->next;
 	}
@@ -66,10 +68,12 @@ int	path(t_pipe *data)
 int	set_path(t_pipe *data, char **env)
 {
 	int		i;
+	char	*tmp;
 
 	i = 0;
+	data->env = ft_strdup(".:");
 	if (!env)
-		return (data->env = ft_strdup("."), FALSE);
+		return (FALSE);
 	while (env[i])
 	{
 		if (ft_strncmp("PATH=", env[i], 5) == 0)
@@ -78,9 +82,10 @@ int	set_path(t_pipe *data, char **env)
 	}
 	if (env[i])
 	{
-		data->env = ft_strdup(env[i] + 5);
+		tmp = data->env;
+		data->env = ft_strjoin(data->env, env[i] + 5);
+		free(tmp);
 		return (TRUE);
 	}
-	data->env = ft_strdup(".");
 	return (FALSE);
 }

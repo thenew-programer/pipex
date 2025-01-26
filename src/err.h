@@ -16,8 +16,11 @@
 # define OPEN_INFILE_ERR		"unable to create infile"
 # define OPEN_OUTFILE_ERR		"unable to create outfile"
 # define MALLOC_ERR				"malloc failed"
-# define USAGE_ERR				"Usage: ./pipex infile cmd1 cmd2 outfile\n" \
-								"Usage: ./pipex here_doc LIMITER cmd1 cmd2 outfile"
+# define USAGE_ERR				"Usage: ./pipex infile cmd1 cmd2 outfile"
+# ifdef PIPEX_BONUS
+#  undef USAGE_ERR
+#  define USAGE_ERR	"Usage: ./pipex here_doc LIMITER cmd1 cmd2 outfile"
+# endif
 # define FILE_READ_ACCESS_ERR	"access: Unable to access file in read mode"
 # define FILE_WRITE_ACCESS_ERR	"access: Unable to access file in write mode"
 # define CMD_NOT_FOUND			"command not found"
