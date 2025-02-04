@@ -71,3 +71,12 @@ void	free_cmd(t_cmd *cmd)
 		free(cmd);
 	}
 }
+
+t_cmd	*cmdlast(t_cmd *cmd)
+{
+	if (!cmd)
+		return (NULL);
+	while (cmd->next)
+		cmd = cmd->next;
+	return (cmd);
+}

@@ -75,6 +75,7 @@ int		create_pipe(t_pipe *data);
 /*---------------------------------cmd.c--------------------------------------*/
 t_cmd	*cmd_new(void);
 void	cmd_addback(t_cmd **head, t_cmd *cmd);
+t_cmd	*cmdlast(t_cmd *cmd);
 void	free_cmdlst(t_cmd **head);
 void	free_cmd(t_cmd *cmd);
 

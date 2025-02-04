@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "err.h"
 #include "libft.h"
 #include "pipex.h"
 #include <unistd.h>
@@ -39,13 +40,16 @@ int	find_path(t_pipe *data, t_cmd *cmd, char *env)
 	cmd->path = tmp;
 	free_strs_split(strs);
 	if (!tmp)
-		die(CMD_NOT_FOUND, data, 127, TRUE);
+		return (FALSE);
+	(void)data;
+		// die(ft_strjoin(CMD_NOT_FOUND, cmd->args[0]), data, 127, TRUE);
 	return (TRUE);
 }
 
 int	path(t_pipe *data)
 {
 	t_cmd	*tmp;
+	int		ret;
 
 	if (!data->cmd)
 		return (FALSE);
@@ -58,8 +62,15 @@ int	path(t_pipe *data)
 			tmp = tmp->next;
 			continue ;
 		}
-		if (find_path(data, tmp, data->env) == FALSE)
-			die(CMD_NOT_FOUND, data, 0, TRUE);
+		ret = find_path(data, tmp, data->env);
+		if (ret == FALSE && tmp == data->cmd && data->infile_fd == STDIN_FILENO)
+		{
+			if (tmp->path)
+				return (free(tmp->path), tmp->path = NULL, FALSE);
+			return (FALSE);
+		}
+		else if (ret == FALSE)
+			die(ft_strjoin(CMD_NOT_FOUND, tmp->args[0]), data, FALSE, FALSE);
 		tmp = tmp->next;
 	}
 	return (TRUE);
