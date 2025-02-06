@@ -18,10 +18,13 @@ int	main(int ac, char **av, char **env)
 	int		ret;
 
 	if (ac < 5)
-		die(USAGE_ERR, NULL, 1, TRUE);
+	{
+		die(USAGE_ERR, "", NULL, TRUE);
+		return (0);
+	}
 	data = init_pipe();
 	if (!data)
-		die(MALLOC_ERR, data, 1, TRUE);
+		die(MALLOC_ERR, "", data, TRUE);
 	set_path(data, env);
 	// if (ft_strncmp(av[1], "here_doc", 9) == 0)
 	// {
@@ -32,8 +35,8 @@ int	main(int ac, char **av, char **env)
 	// else
 	// {
 	parser(ac - 1, av + 1, data);
-	data->infile_fd = open_file(data->infile, data, O_RDONLY);
-	data->outfile_fd = open_file(data->outfile, data, O_WRONLY);
+	data->infile_fd = open_file(data->infile, O_RDONLY);
+	data->outfile_fd = open_file(data->outfile, O_WRONLY);
 	path(data);
 	// }
 	ret = exec(data, env);

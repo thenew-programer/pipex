@@ -63,14 +63,13 @@ int	path(t_pipe *data)
 			continue ;
 		}
 		ret = find_path(data, tmp, data->env);
-		if (ret == FALSE && tmp == data->cmd && data->infile_fd == STDIN_FILENO)
-		{
-			if (tmp->path)
-				return (free(tmp->path), tmp->path = NULL, FALSE);
+		if (ret == TRUE && tmp == data->cmd && data->infile_fd == STDIN_FILENO)
+			return (free(tmp->path), tmp->path = NULL, FALSE);
+		else if (ret == FALSE && tmp == data->cmd &&
+				data->infile_fd == STDIN_FILENO)
 			return (FALSE);
-		}
 		else if (ret == FALSE)
-			die(ft_strjoin(CMD_NOT_FOUND, tmp->args[0]), data, FALSE, FALSE);
+			die(CMD_NOT_FOUND, tmp->args[0], NULL, FALSE);
 		tmp = tmp->next;
 	}
 	return (TRUE);

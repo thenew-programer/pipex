@@ -26,7 +26,7 @@ int	exec(t_pipe *data, char **env)
 	close_file(&data->infile_fd, STDIN_FILENO);
 	close_file(&data->outfile_fd, STDOUT_FILENO);
 	if (pipe(data->pipefd) == -1)
-		die("", data, TRUE, 1);
+		die("", "", data, 1);
 	cmd = data->cmd;
 	cmd->ctx.fd[STDOUT_FILENO] = data->pipefd[STDOUT_FILENO];
 	cmd->ctx.fd_close = data->pipefd[STDIN_FILENO];
@@ -48,18 +48,18 @@ static int	exec_cmd(t_pipe *data, t_cmd *cmd, char **env)
 
 	if (!cmd)
 		return (FALSE);
+	if (!cmd->path)
+		return (127);
 	pid = fork();
 	if (pid == -1)
-		die("", data, TRUE, 1);
+		die("", "", data, 1);
 	if (pid == 0)
 	{
 		duptwo(data, cmd->ctx.fd[STDIN_FILENO], STDIN_FILENO);
 		duptwo(data, cmd->ctx.fd[STDOUT_FILENO], STDOUT_FILENO);
 		close_file(&cmd->ctx.fd_close, -1);
-		if (!cmd->path)
-			return (127);
 		if (execve(cmd->path, cmd->args, env) == -1)
-			die("", data, TRUE, 1);
+			die("", "", data, 1);
 	}
 	return (TRUE);
 }

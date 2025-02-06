@@ -10,23 +10,25 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "pipex.h"
+#include <unistd.h>
 
-void	die(char *err, t_pipe *data, int status, int ex)
+void	die(char *err, char *sup, t_pipe *data, int status)
 {
 	if (err)
 	{
 		ft_putstr_fd("pipex: ", STDERR_FILENO);
-		if (errno == 0 && err && *err)
+		ft_putstr_fd(sup, STDERR_FILENO);
+		ft_putstr_fd(": ", STDERR_FILENO);
+		if (errno == 0)
 			ft_putendl_fd(err, STDERR_FILENO);
 		else
 			perror("");
 	}
-	if (data && ex)
+	if (data)
 	{
 		free_pipe_data(data);
 		exit(status);
 	}
-	if (ex)
-		exit(status);
 }

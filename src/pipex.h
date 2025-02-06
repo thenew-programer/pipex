@@ -54,7 +54,7 @@ typedef struct s_pipe
 }	t_pipe;
 
 /*---------------------------------err.c--------------------------------------*/
-void	die(char *err, t_pipe *data, int status, int ex);
+void	die(char *err, char *sup, t_pipe *data, int status);
 
 /*------------------------------dealloc.c-------------------------------------*/
 void	free_strs_split(char **strs);
@@ -68,7 +68,7 @@ char	*ft_strs_cat(char **strs, int len);
 t_pipe	*init_pipe(void);
 
 /*----------------------------------io.c--------------------------------------*/
-int		open_file(char *filename, t_pipe *data, int flags);
+int		open_file(char *filename, int flags);
 int		close_file(int *fd, int dflt);
 int		create_pipe(t_pipe *data);
 

@@ -18,7 +18,7 @@ int	duptwo(t_pipe *data, int oldfd, int newfd)
 
 	ret = dup2(oldfd, newfd);
 	if (-1 == ret)
-		die("", data, 1, TRUE);
+		die("", "", data, TRUE);
 	return (ret);
 }
 
@@ -28,6 +28,6 @@ int	access_file(t_pipe *data, char *filename, int mode)
 
 	ret = access(filename, mode);
 	if (ret == -1)
-		die("", data, 1, TRUE);
+		die("", filename, data, TRUE);
 	return (ret);
 }
