@@ -18,10 +18,7 @@ int	main(int ac, char **av, char **env)
 	int		ret;
 
 	if (ac < 5)
-	{
-		die(USAGE_ERR, "", NULL, TRUE);
-		return (0);
-	}
+		return (die(USAGE_ERR, "", NULL, TRUE), 0);
 	data = init_pipe();
 	if (!data)
 		die(MALLOC_ERR, "", data, TRUE);
@@ -35,8 +32,8 @@ int	main(int ac, char **av, char **env)
 	// else
 	// {
 	parser(ac - 1, av + 1, data);
-	data->infile_fd = open_file(data->infile, O_RDONLY);
-	data->outfile_fd = open_file(data->outfile, O_WRONLY);
+	data->infile_fd = open_file(data, data->infile, O_RDONLY);
+	data->outfile_fd = open_file(data, data->outfile, O_WRONLY);
 	path(data);
 	// }
 	ret = exec(data, env);

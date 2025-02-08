@@ -10,10 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "err.h"
 #include "libft.h"
 #include "pipex.h"
-#include <unistd.h>
 
 int	find_path(t_pipe *data, t_cmd *cmd, char *env)
 {
@@ -64,10 +62,9 @@ int	path(t_pipe *data)
 		}
 		ret = find_path(data, tmp, data->env);
 		if (ret == TRUE && tmp == data->cmd && data->infile_fd == STDIN_FILENO)
-			return (free(tmp->path), tmp->path = NULL, FALSE);
+			free(tmp->path), tmp->path = NULL;
 		else if (ret == FALSE && tmp == data->cmd &&
-				data->infile_fd == STDIN_FILENO)
-			return (FALSE);
+				data->infile_fd == STDIN_FILENO);
 		else if (ret == FALSE)
 			die(CMD_NOT_FOUND, tmp->args[0], NULL, FALSE);
 		tmp = tmp->next;

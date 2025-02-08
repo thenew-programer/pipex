@@ -11,13 +11,14 @@
 /* ************************************************************************** */
 
 #include "pipex.h"
+#include <unistd.h>
 
 static int	open_in_file(char *filename)
 {
 	int	fd;
 	int	ret;
 
-	ret = access(filename, W_OK);
+	ret = access(filename, R_OK);
 	if (ret == -1)
 	{
 		die("", filename, NULL, FALSE);
@@ -32,7 +33,7 @@ static int	open_in_file(char *filename)
 	return (fd);
 }
 
-static int	open_out_file(char *filename)
+static int	open_out_file(char *filename, t_pipe *data)
 {
 	int	fd;
 	int	ret;
@@ -42,18 +43,15 @@ static int	open_out_file(char *filename)
 	flags = O_WRONLY | O_CREAT | O_TRUNC;
 	ret = access(filename, W_OK);
 	if (ret == -1 && errno == EACCES)
-		die("", filename, NULL, TRUE);
+		die("", filename, data, TRUE);
 	permissions = S_IWUSR | S_IRUSR | S_IRGRP | S_IROTH;
 	fd = open(filename, flags, permissions);
 	if (fd < 3)
-	{
-		die("", filename, NULL, FALSE);
-		return (STDOUT_FILENO);
-	}
+		die("", filename, data, TRUE);
 	return (fd);
 }
 
-int	open_file(char *filename, int flags)
+int	open_file(t_pipe *data, char *filename, int flags)
 {
 	int	fd;
 
@@ -61,7 +59,7 @@ int	open_file(char *filename, int flags)
 	if (flags == O_RDONLY)
 		fd = open_in_file(filename);
 	else if (flags == O_WRONLY)
-		fd = open_out_file(filename);
+		fd = open_out_file(filename, data);
 	return (fd);
 }
 

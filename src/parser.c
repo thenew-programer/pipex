@@ -21,7 +21,7 @@ t_cmd	*parse_cmd(char *command, t_pipe *data)
 
 	cmd = cmd_new();
 	if (!cmd)
-		die(MALLOC_ERR, data, 1, TRUE);
+		die(MALLOC_ERR, "", data, TRUE);
 	strs = ft_split(command, ' ');
 	len = ft_split_len(strs);
 	if (len <= 0)
@@ -46,7 +46,7 @@ void	parser(int ac, char **av, t_pipe *data)
 		if (!tmp)
 		{
 			free_cmdlst(&cmd);
-			die(EMPTY_CMD, data, 1, TRUE);
+			die(EMPTY_CMD, "", data, TRUE);
 		}
 		cmd_addback(&cmd, tmp);
 		i++;

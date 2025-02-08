@@ -46,10 +46,10 @@ void	heredoc(t_pipe *data)
 	str = read_heredoc(data->infile);
 	cmd = (t_cmd *)malloc(sizeof(t_cmd));
 	if (!cmd)
-		die(MALLOC_ERR, data, 1, TRUE);
+		die(MALLOC_ERR, "", data, EXIT_FAILURE);
 	cmd->args = (char **)malloc(sizeof(char *) * 4);
 	if (!cmd->args)
-		die(MALLOC_ERR, data, 1, TRUE);
+		die(MALLOC_ERR, "", data, EXIT_FAILURE);
 	cmd->args[0] = ft_strdup("echo");
 	cmd->args[1] = ft_strdup("-e");
 	cmd->args[2] = str;

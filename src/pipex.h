@@ -68,7 +68,7 @@ char	*ft_strs_cat(char **strs, int len);
 t_pipe	*init_pipe(void);
 
 /*----------------------------------io.c--------------------------------------*/
-int		open_file(char *filename, int flags);
+int		open_file(t_pipe *data, char *filename, int flags);
 int		close_file(int *fd, int dflt);
 int		create_pipe(t_pipe *data);
 
