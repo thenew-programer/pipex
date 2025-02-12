@@ -11,19 +11,21 @@
 /* ************************************************************************** */
 
 #include "pipex.h"
+#include <fcntl.h>
+#include <unistd.h>
 
-static void	exec_cmd(t_pipe *data, t_cmd *cmd, char **env);
+static int	exec_cmd(t_pipe *data, t_cmd *cmd, char **env);
 
 int	exec(t_pipe *data, char **env)
 {
 	t_cmd	*cmd;
 	int		status;
 	int		i;
+	int		ret;
 
 	duptwo(data, data->infile_fd, STDIN_FILENO);
-	duptwo(data, data->outfile_fd, STDOUT_FILENO);
 	close_file(&data->infile_fd, STDIN_FILENO);
-	close_file(&data->outfile_fd, STDOUT_FILENO);
+	duptwo(data, data->outfile_fd, STDOUT_FILENO);
 	if (pipe(data->pipefd) == -1)
 		die("", "", data, 1);
 	cmd = data->cmd;
@@ -34,30 +36,37 @@ int	exec(t_pipe *data, char **env)
 	cmd = cmd->next;
 	cmd->ctx.fd[STDIN_FILENO] = data->pipefd[STDIN_FILENO];
 	cmd->ctx.fd_close = data->pipefd[STDOUT_FILENO];
-	exec_cmd(data, cmd, env);
+	ret = exec_cmd(data, cmd, env);
+	close_file(&data->pipefd[STDIN_FILENO], STDIN_FILENO);
+	close_file(&data->outfile_fd, STDOUT_FILENO);
 	i = 0;
 	while (i++ < 2)
 		wait(&status);
-	close(data->pipefd[STDIN_FILENO]);
-	close(data->pipefd[STDOUT_FILENO]);
+	if (ret == 127)
+		return (ret);
 	return (WEXITSTATUS(status));
 }
 
-static void	exec_cmd(t_pipe *data, t_cmd *cmd, char **env)
+static int	exec_cmd(t_pipe *data, t_cmd *cmd, char **env)
 {
 	int	pid;
 
 	if (!cmd->path)
-		return ;
+		return (127);
 	pid = fork();
 	if (pid == -1)
-		die("", "", data, 1);
+		die(NULL, NULL, data, TRUE);
 	if (pid == 0)
 	{
 		close_file(&cmd->ctx.fd_close, -1);
+		if (data->outfile_fd == STDOUT_FILENO && !cmd->next)
+			die(NULL, NULL, data, TRUE);
+		// if (!cmd->path)
+		// 	die("", "", data, 127);
 		duptwo(data, cmd->ctx.fd[STDIN_FILENO], STDIN_FILENO);
 		duptwo(data, cmd->ctx.fd[STDOUT_FILENO], STDOUT_FILENO);
 		if (execve(cmd->path, cmd->args, env) == -1)
 			die("", "", data, TRUE);
 	}
+	return (0);
 }

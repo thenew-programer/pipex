@@ -43,7 +43,7 @@ static int	open_out_file(char *filename, t_pipe *data)
 	flags = O_WRONLY | O_CREAT | O_TRUNC;
 	ret = access(filename, W_OK);
 	if (ret == -1 && errno == EACCES)
-		die("", filename, data, TRUE);
+		die("", filename, NULL, TRUE);
 	permissions = S_IWUSR | S_IRUSR | S_IRGRP | S_IROTH;
 	fd = open(filename, flags, permissions);
 	if (fd < 3)
