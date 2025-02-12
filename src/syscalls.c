@@ -31,3 +31,13 @@ int	access_file(t_pipe *data, char *filename, int mode)
 		die("", filename, data, TRUE);
 	return (ret);
 }
+
+int	create_pipe(t_pipe *data, int *fd)
+{
+	int	ret;
+
+	ret = pipe(fd);
+	if (ret == -1)
+		die("", "", data, TRUE);
+	return (ret);
+}
