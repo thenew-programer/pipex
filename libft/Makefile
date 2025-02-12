@@ -12,7 +12,7 @@ CC			= cc
 RM			= rm -f
 AR			= ar rcs
 
-CFLAGS		= -Wall -Wextra -Werror
+CFLAGS		= -Wall -Wextra -Werror -fPIE
 
 .c.o:
 			${CC} ${CFLAGS} -c $< -o ${<:.c=.o}
