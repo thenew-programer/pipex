@@ -1,4 +1,4 @@
-CC			= cc
+CC			= gcc
 CFLAGS		= -Wall -Werror -Wextra -I$(HEAD)
 LDFLAGS		= -L$(LIBFT_DIR) -lft
 RM			= rm -rf
