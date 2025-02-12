@@ -1,9 +1,8 @@
 *.o
-pipex*
+pipex
 obj
 *.a
 a.out
 out
 bin
 *.txt
-test

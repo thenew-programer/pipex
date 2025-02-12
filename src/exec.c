@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "pipex.h"
-#include <stdlib.h>
 
 static void	exec_cmd(t_pipe *data, t_cmd *cmd, char **env);
 
@@ -36,11 +35,11 @@ int	exec(t_pipe *data, char **env)
 	cmd->ctx.fd[STDIN_FILENO] = data->pipefd[STDIN_FILENO];
 	cmd->ctx.fd_close = data->pipefd[STDOUT_FILENO];
 	exec_cmd(data, cmd, env);
-	i = -1;
-	while (++i < 2)
+	i = 0;
+	while (i++ < 2)
 		wait(&status);
-	if (!cmd->path)
-		return (127);
+	close(data->pipefd[STDIN_FILENO]);
+	close(data->pipefd[STDOUT_FILENO]);
 	return (WEXITSTATUS(status));
 }
 
@@ -48,8 +47,6 @@ static void	exec_cmd(t_pipe *data, t_cmd *cmd, char **env)
 {
 	int	pid;
 
-	if (!cmd)
-		return ;
 	if (!cmd->path)
 		return ;
 	pid = fork();
@@ -57,9 +54,9 @@ static void	exec_cmd(t_pipe *data, t_cmd *cmd, char **env)
 		die("", "", data, 1);
 	if (pid == 0)
 	{
+		close_file(&cmd->ctx.fd_close, -1);
 		duptwo(data, cmd->ctx.fd[STDIN_FILENO], STDIN_FILENO);
 		duptwo(data, cmd->ctx.fd[STDOUT_FILENO], STDOUT_FILENO);
-		close_file(&cmd->ctx.fd_close, -1);
 		if (execve(cmd->path, cmd->args, env) == -1)
 			die("", "", data, TRUE);
 	}

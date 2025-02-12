@@ -13,7 +13,7 @@
 #include "libft.h"
 #include "pipex.h"
 
-int	find_path(t_pipe *data, t_cmd *cmd, char *env)
+int	find_path(t_cmd *cmd, char *env)
 {
 	int		i;
 	char	**strs;
@@ -39,8 +39,6 @@ int	find_path(t_pipe *data, t_cmd *cmd, char *env)
 	free_strs_split(strs);
 	if (!tmp)
 		return (FALSE);
-	(void)data;
-		// die(ft_strjoin(CMD_NOT_FOUND, cmd->args[0]), data, 127, TRUE);
 	return (TRUE);
 }
 
@@ -60,11 +58,11 @@ int	path(t_pipe *data)
 			tmp = tmp->next;
 			continue ;
 		}
-		ret = find_path(data, tmp, data->env);
+		ret = find_path(tmp, data->env);
 		if (ret == TRUE && tmp == data->cmd && data->infile_fd == STDIN_FILENO)
-			free(tmp->path), tmp->path = NULL;
-		else if (ret == FALSE && tmp == data->cmd &&
-				data->infile_fd == STDIN_FILENO);
+			(1) && (free(tmp->path), tmp->path = NULL);
+		else if (ret == FALSE && tmp == data->cmd
+			&& data->infile_fd == STDIN_FILENO);
 		else if (ret == FALSE)
 			die(CMD_NOT_FOUND, tmp->args[0], NULL, FALSE);
 		tmp = tmp->next;

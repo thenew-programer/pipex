@@ -85,7 +85,7 @@ void	parser(int ac, char **av, t_pipe *data);
 
 /*--------------------------------path.c--------------------------------------*/
 int		path(t_pipe *data);
-int		find_path(t_pipe *data, t_cmd *cmd, char *env);
+int		find_path(t_cmd *cmd, char *env);
 int		set_path(t_pipe *data, char **env);
 
 /*--------------------------------exec.c--------------------------------------*/

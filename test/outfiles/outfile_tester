@@ -1,0 +1,6 @@
+This is random text echoed into existing outfiles before 
+applying pipex. This allows to verify whether your program
+and the original replace or append existing text
+Hello$$
+Hello$$
+Hello$$
