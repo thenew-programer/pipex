@@ -17,7 +17,7 @@ int	main(int ac, char **av, char **env)
 	t_pipe	*data;
 	int		ret;
 
-	if (ac < 5)
+	if (ac != 5)
 		return (die(USAGE_ERR, "", NULL, TRUE), 0);
 	data = init_pipe();
 	if (!data)
