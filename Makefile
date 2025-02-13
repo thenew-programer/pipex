@@ -9,8 +9,8 @@ LIBFT_DIR	= libft
 LIBFT		= $(LIBFT_DIR)/libft.a
 HEAD		= inc
 
-FILES		= err.c cmd.c dealloc.c exec.c here_doc.c init.c io.c \
-			  main.c parser.c path.c pipex.h syscalls.c utils.c
+FILES		= err.c cmd.c dealloc.c exec.c init.c io.c \
+			  main.c parser.c path.c syscalls.c utils.c
 SRCS		= $(addprefix $(SRCS_DIR)/, $(FILES))
 OBJS		= $(patsubst $(SRCS_DIR)/%.c, $(OBJS_DIR)/%.o, $(SRCS))
 
