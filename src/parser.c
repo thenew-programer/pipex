@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "err.h"
 #include "pipex.h"
 
 t_cmd	*parse_cmd(char *command, t_pipe *data)

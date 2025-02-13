@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 
 #include "pipex.h"
-#include <string.h>
-#include <unistd.h>
 
 char	*remove_endl(char *str)
 {

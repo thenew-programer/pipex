@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 
 #include "pipex.h"
-#include <fcntl.h>
-#include <unistd.h>
 
 static int	exec_cmd(t_pipe *data, t_cmd *cmd, char **env);
 
