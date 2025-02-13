@@ -49,7 +49,6 @@ typedef struct s_pipe
 	int		pipefd[2];
 	t_cmd	*cmd;
 	char	*env;
-	int		heredoc;
 }	t_pipe;
 
 /*---------------------------------err.c--------------------------------------*/
