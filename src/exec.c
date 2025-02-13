@@ -32,10 +32,10 @@ int	exec(t_pipe *data, char **env)
 	close_file(&data->pipefd[STDOUT_FILENO], STDOUT_FILENO);
 	cmd = cmd->next;
 	cmd->ctx.fd[STDIN_FILENO] = data->pipefd[STDIN_FILENO];
-	cmd->ctx.fd_close = data->pipefd[STDOUT_FILENO];
 	ret = exec_cmd(data, cmd, env);
 	close_file(&data->pipefd[STDIN_FILENO], STDIN_FILENO);
-	(1) && (close_file(&data->outfile_fd, STDOUT_FILENO), i = 0);
+	close_file(&data->outfile_fd, STDOUT_FILENO);
+	i = 0;
 	while (i++ < 2)
 		wait(&status);
 	if (ret == 127)
