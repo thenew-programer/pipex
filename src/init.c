@@ -27,6 +27,5 @@ t_pipe	*init_pipe(void)
 	data->outfile_fd = -1;
 	data->pipefd[STDIN_FILENO] = -1;
 	data->pipefd[STDOUT_FILENO] = -1;
-	data->heredoc = FALSE;
 	return (data);
 }
